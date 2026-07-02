@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generador LOTO · Cerámica Mayor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- HEADER CORPORATIVO -->
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-mark">M</div>
+        <div class="brand-text">
+          <span class="brand-name">Cerámica Mayor</span>
+          <span class="brand-sub">Sistema LOTO · Dirección Técnica</span>
+        </div>
+      </div>
+      <div class="header-meta">
+        <span class="doc-ref">PR-DT-SEG-LOTO</span>
+        <span class="doc-rev">Rev. 01 · 2026</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- LAYOUT PRINCIPAL -->
+  <main class="app-layout">
+
+    <!-- PANEL IZQUIERDO: FORMULARIO -->
+    <aside class="panel-form">
+
+      <div class="panel-section">
+        <h2 class="section-title">Identificación del equipo</h2>
+
+        <div class="field-group">
+          <label class="field-label">Código equipo / cuadro</label>
+          <input type="text" id="codigoEquipo" class="field-input" placeholder="EQ-001 / QP-05">
+        </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label">Línea / Zona</label>
+            <input type="text" id="lineaZona" class="field-input" placeholder="Línea 2 / Nave A">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Nivel de riesgo</label>
+            <select id="nivelRiesgo" class="field-input">
+              <option value="ALTO">🔴 ALTO</option>
+              <option value="MEDIO" selected>🟡 MEDIO</option>
+              <option value="BAJO">🟢 BAJO</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Descripción del equipo</label>
+          <input type="text" id="descripcion" class="field-input" placeholder="Nombre / función del equipo">
+        </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label">Marca · Modelo</label>
+            <input type="text" id="marcaModelo" class="field-input" placeholder="Fabricante · Modelo">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Nº serie</label>
+            <input type="text" id="numSerie" class="field-input" placeholder="SN-XXXXX">
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label">Ubicación física</label>
+            <input type="text" id="ubicacionFisica" class="field-input" placeholder="Nave / pasillo / coord.">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Plano eléctrico ref.</label>
+            <input type="text" id="planoElectrico" class="field-input" placeholder="PE-XXX Rev. X">
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label">Redactado por</label>
+            <input type="text" id="redactadoPor" class="field-input" placeholder="Nombre · Cargo">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Fecha</label>
+            <input type="date" id="fechaDoc" class="field-input">
+          </div>
+        </div>
+      </div>
+
+      <!-- PUNTOS DE AISLAMIENTO -->
+      <div class="panel-section">
+        <div class="section-header-row">
+          <h2 class="section-title">Puntos de aislamiento</h2>
+          <button class="btn-add" onclick="addPoint()">+ Añadir punto</button>
+        </div>
+        <p class="section-hint">Añade los puntos en el orden exacto de ejecución.</p>
+
+        <div id="pointsEditor"></div>
+      </div>
+
+      <!-- ENERGÍAS RESIDUALES -->
+      <div class="panel-section">
+        <h2 class="section-title">Energías residuales</h2>
+        <p class="section-hint">Marca las presentes en este equipo.</p>
+        <div class="residual-grid" id="residualGrid">
+          <label class="residual-item">
+            <input type="checkbox" id="res_capacitiva"> <span class="res-label">⚡ Carga capacitiva (variadores)</span>
+          </label>
+          <label class="residual-item">
+            <input type="checkbox" id="res_neumatica"> <span class="res-label">💨 Presión neumática</span>
+          </label>
+          <label class="residual-item">
+            <input type="checkbox" id="res_gravitacional"> <span class="res-label">⬇️ Energía gravitacional</span>
+          </label>
+          <label class="residual-item">
+            <input type="checkbox" id="res_termica"> <span class="res-label">🌡️ Calor residual</span>
+          </label>
+          <label class="residual-item">
+            <input type="checkbox" id="res_inercia"> <span class="res-label">🔄 Inercia mecánica</span>
+          </label>
+          <label class="residual-item">
+            <input type="checkbox" id="res_hidraulica"> <span class="res-label">💧 Presión hidráulica</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- EPI -->
+      <div class="panel-section">
+        <h2 class="section-title">EPI obligatorios</h2>
+        <div class="residual-grid">
+          <label class="residual-item">
+            <input type="checkbox" id="epi_guantes" checked> <span class="res-label">🧤 Guantes dieléctricos</span>
+          </label>
+          <label class="residual-item">
+            <input type="checkbox" id="epi_pantalla"> <span class="res-label">🛡️ Pantalla facial (Arc Flash)</span>
+          </label>
+          <label class="residual-item">
+            <input type="checkbox" id="epi_calzado" checked> <span class="res-label">👟 Calzado aislante</span>
+          </label>
+          <label class="residual-item">
+            <input type="checkbox" id="epi_gafas"> <span class="res-label">🥽 Gafas de seguridad</span>
+          </label>
+          <label class="residual-item">
+            <input type="checkbox" id="epi_arcflash"> <span class="res-label">⚡ EPI Arc Flash clase 2</span>
+          </label>
+          <label class="residual-item">
+            <input type="checkbox" id="epi_termico"> <span class="res-label">🌡️ EPI térmico (horno)</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- ACCIONES -->
+      <div class="panel-section panel-actions">
+        <button class="btn-primary" onclick="updatePreview()">↻ Actualizar vista previa</button>
+        <button class="btn-secondary" onclick="saveToLocal()">💾 Guardar borrador</button>
+        <button class="btn-secondary" onclick="loadFromLocal()">📂 Cargar borrador</button>
+        <button class="btn-print" onclick="printFicha()">🖨️ Imprimir / PDF</button>
+      </div>
+
+    </aside>
+
+    <!-- PANEL DERECHO: VISTA PREVIA -->
+    <section class="panel-preview">
+      <div class="preview-toolbar">
+        <span class="preview-label">Vista previa · Ficha LOTO de Campo</span>
+        <span class="preview-hint">Esta es la ficha que se imprimirá y plastificará en el equipo</span>
+      </div>
+
+      <!-- FICHA A4 -->
+      <div class="ficha-a4" id="fichaPreview">
+
+        <!-- CABECERA FICHA -->
+        <div class="ficha-header">
+          <div class="ficha-brand">
+            <div class="ficha-brand-mark">M</div>
+            <div>
+              <div class="ficha-brand-name">CERÁMICA MAYOR</div>
+              <div class="ficha-brand-sub">FICHA LOTO DE CAMPO</div>
+            </div>
+          </div>
+          <div class="ficha-ref-block">
+            <div class="ficha-ref-row"><span class="ficha-ref-label">REF</span><span class="ficha-ref-val" id="prev_codigo">—</span></div>
+            <div class="ficha-ref-row"><span class="ficha-ref-label">DOC</span><span class="ficha-ref-val">PR-DT-SEG-LOTO-FICHA</span></div>
+            <div class="ficha-ref-row"><span class="ficha-ref-label">REV</span><span class="ficha-ref-val">01 · 2026</span></div>
+          </div>
+        </div>
+
+        <!-- ALERTA SUPERIOR -->
+        <div class="ficha-alert-top">
+          ⚠️ LEER COMPLETAMENTE ANTES DE INTERVENIR — Este equipo puede contener energías residuales peligrosas tras el corte eléctrico
+        </div>
+
+        <!-- SECCIÓN A: IDENTIFICACIÓN -->
+        <div class="ficha-section-title ficha-blue">A · IDENTIFICACIÓN DEL EQUIPO</div>
+        <div class="ficha-id-grid">
+          <div class="ficha-id-cell">
+            <span class="ficha-id-label">Código</span>
+            <span class="ficha-id-val" id="prev_codigoCell">—</span>
+          </div>
+          <div class="ficha-id-cell">
+            <span class="ficha-id-label">Línea / Zona</span>
+            <span class="ficha-id-val" id="prev_linea">—</span>
+          </div>
+          <div class="ficha-id-cell ficha-id-wide">
+            <span class="ficha-id-label">Descripción</span>
+            <span class="ficha-id-val" id="prev_descripcion">—</span>
+          </div>
+          <div class="ficha-id-cell ficha-id-wide">
+            <span class="ficha-id-label">Marca · Modelo · Nº serie</span>
+            <span class="ficha-id-val" id="prev_marca">—</span>
+          </div>
+          <div class="ficha-id-cell">
+            <span class="ficha-id-label">Ubicación física</span>
+            <span class="ficha-id-val" id="prev_ubicacion">—</span>
+          </div>
+          <div class="ficha-id-cell">
+            <span class="ficha-id-label">Plano eléctrico</span>
+            <span class="ficha-id-val" id="prev_plano">—</span>
+          </div>
+          <div class="ficha-id-cell">
+            <span class="ficha-id-label">Nivel de riesgo</span>
+            <span class="ficha-id-val ficha-risk" id="prev_riesgo">—</span>
+          </div>
+          <div class="ficha-id-cell">
+            <span class="ficha-id-label">Redactado por · Fecha</span>
+            <span class="ficha-id-val" id="prev_autor">—</span>
+          </div>
+        </div>
+
+        <!-- SECCIÓN B: PUNTOS DE AISLAMIENTO -->
+        <div class="ficha-section-title ficha-blue">B · PUNTOS DE AISLAMIENTO Y BLOQUEO <span style="font-weight:400;font-style:italic;">(ejecutar en este orden)</span></div>
+        <table class="ficha-table" id="prev_pointsTable">
+          <thead>
+            <tr>
+              <th style="width:28px">Nº</th>
+              <th>Tipo energía</th>
+              <th>Dispositivo / Referencia</th>
+              <th>Ubicación</th>
+              <th>Acción</th>
+              <th style="width:60px">Candado</th>
+              <th style="width:22px">✓</th>
+            </tr>
+          </thead>
+          <tbody id="prev_pointsBody">
+            <tr><td colspan="7" class="ficha-table-empty">Sin puntos definidos — añade puntos en el formulario</td></tr>
+          </tbody>
+        </table>
+
+        <!-- BLOQUE PUNTO PREFERENTE -->
+        <div class="ficha-alert-blue" id="prev_bloqueoPreferente">
+          <strong>⚡ PUNTO DE BLOQUEO PREFERENTE:</strong> Define los puntos de aislamiento para ver la recomendación automática.
+        </div>
+
+        <!-- SECCIÓN C: ENERGÍAS RESIDUALES -->
+        <div class="ficha-section-title ficha-orange">C · ENERGÍAS RESIDUALES IDENTIFICADAS</div>
+        <div class="ficha-residual-grid" id="prev_residuals">
+          <div class="ficha-residual-empty">Sin energías residuales marcadas</div>
+        </div>
+
+        <!-- SECCIÓN D: VERIFICACIÓN ENERGÍA CERO -->
+        <div class="ficha-section-title ficha-red">D · VERIFICACIÓN DE ENERGÍA CERO — OBLIGATORIA — NO OMITIR</div>
+        <div class="ficha-checklist">
+          <div class="ficha-check-item"><span class="ficha-check-box">☐</span> Ausencia de tensión verificada con multímetro CAT III en L1, L2, L3 y N</div>
+          <div class="ficha-check-item"><span class="ficha-check-box">☐</span> Presión neumática = 0 bar (verificado en manómetro)</div>
+          <div class="ficha-check-item"><span class="ficha-check-box">☐</span> Intentado arranque desde mando local: equipo permanece detenido</div>
+          <div class="ficha-check-item"><span class="ficha-check-box">☐</span> Intentado arranque desde HMI / SCADA: equipo permanece detenido</div>
+          <div class="ficha-check-item"><span class="ficha-check-box">☐</span> Elementos móviles visualmente detenidos</div>
+          <div class="ficha-check-item" id="prev_checkVariador"><span class="ficha-check-box">☐</span> DC bus variador &lt; 50 V DC — esperar mín. 5 min tras corte <em>(si aplica)</em></div>
+        </div>
+
+        <!-- SECCIÓN E: EPI -->
+        <div class="ficha-section-title ficha-green">E · EPI OBLIGATORIOS</div>
+        <div class="ficha-epi-grid" id="prev_epiGrid">
+          <div class="ficha-residual-empty">Sin EPI marcados</div>
+        </div>
+
+        <!-- SECCIÓN F: REGISTRO -->
+        <div class="ficha-section-title ficha-dark">F · REGISTRO DE INTERVENCIONES</div>
+        <table class="ficha-table ficha-registro">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Técnico (nº candado)</th>
+              <th>Trabajo realizado</th>
+              <th>Inicio LOTO</th>
+              <th>Fin LOTO</th>
+              <th>Firma</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr class="ficha-row-alt"><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr class="ficha-row-alt"><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          </tbody>
+        </table>
+
+        <!-- PIE FICHA -->
+        <div class="ficha-footer">
+          <div class="ficha-footer-left">
+            <strong>INSTRUCCIÓN:</strong> Plastificar y fijar en el equipo. Actualizar si cambia la instalación. Retirar la ficha obsoleta físicamente.
+          </div>
+          <div class="ficha-footer-right">
+            PR-DT-SEG-LOTO-FICHA · Rev.01 · Cerámica Mayor
+          </div>
+        </div>
+
+      </div>
+      <!-- /ficha-a4 -->
+
+    </section>
+
+  </main>
+
+  <!-- TOAST NOTIFICACIONES -->
+  <div class="toast" id="toast"></div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
