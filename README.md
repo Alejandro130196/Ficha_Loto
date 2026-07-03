@@ -3,6 +3,7 @@
 **PR-DT-SEG-LOTO · Dirección Técnica · Rev. 01 · 2026**
 
 
+
 Aplicación web interna para generar fichas LOTO de campo, imprimibles en A4 y plastificables para instalar en cuadros eléctricos y máquinas de planta.
 
 ## Acceso rápido
